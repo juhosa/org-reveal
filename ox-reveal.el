@@ -40,6 +40,7 @@
   '(?R "Export to reveal.js HTML Presentation"
        ((?R "To file" org-reveal-export-to-html)
         (?B "To file and browse" org-reveal-export-to-html-and-browse)
+        (?r "Region to file" org-reveal-export-region)
         (?S "Current subtree to file" org-reveal-export-current-subtree)))
 
   :options-alist
@@ -1209,6 +1210,15 @@ transformed fragment attribute to ELEM's attr_html plist."
   "Export current subtree to a Reveal.js HTML file."
   (interactive)
   (org-narrow-to-subtree)
+  (let ((ret (org-reveal-export-to-html async subtreep visible-only body-only (plist-put ext-plist :reveal-subtree t))))
+    (widen)
+    ret))
+
+(defun org-reveal-export-region
+    (&optional async subtreep visible-only body-only ext-plist)
+  "Export region to a Reveal.js HTML file."
+  (interactive)
+  (narrow-to-region (region-beginning) (region-end))
   (let ((ret (org-reveal-export-to-html async subtreep visible-only body-only (plist-put ext-plist :reveal-subtree t))))
     (widen)
     ret))
